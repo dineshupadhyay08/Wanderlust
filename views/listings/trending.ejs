@@ -1,0 +1,31 @@
+
+
+<% layout('/layouts/boilerplate') -%>
+
+<div class="container mt-4">
+  <h2 class="mb-4">🔥 Trending Place</h2>
+
+  <% if (trendingListings.length === 0) { %>
+    <p>No trending listings found.</p>
+  <% } else { %>
+    <div class="row">
+      <% trendingListings.forEach(listing => { %>
+        <div class="card col-4 mb-4 show-card listing-card">
+          <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="listing_image" />
+
+          <div class="card-body">
+            <h5 class="card-title"><%= listing.title %></h5>
+            <p class="card-text"><%= listing.description.substring(0, 100) %>...</p>
+            <p class="card-text">
+              &#8377 <%= listing.price.toLocaleString("en-IN") %>
+            </p>
+            <p class="card-text"><%= listing.location %>, <%= listing.country %></p>
+            <a href="/listings/<%= listing._id %>" class="btn btn-dark">View</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+

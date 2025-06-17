@@ -1,0 +1,28 @@
+<% layout('/layouts/boilerplate') -%>
+
+<div class="container mt-4">
+    <h2 class="mb-4">🏔️ Mountain </h2>
+
+     <% if (mountainListings.length === 0) { %>
+        <p>No listings found in this category.</p>
+    <% } else { %>
+
+    <div class="row">
+        <% mountainListings.forEach(listing => { %>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 listing-card">
+                    <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="<%= listing.title %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= listing.title %></h5>
+                        <p class="card-text"><%= listing.description %></p>
+                        <p><strong>Price:</strong> ₹<%= listing.price %></p>
+                        <a href="/listings/<%= listing._id %>" class="btn btn-dark btn-sm">View</a>
+                    </div>
+                </div>
+            </div>
+         <% }) %>
+    </div>
+    <% } %>
+</div>
+
+
