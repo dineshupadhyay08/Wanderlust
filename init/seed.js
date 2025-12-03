@@ -1,7 +1,9 @@
+require("dotenv").config({ path: "../.env" });
+
 const mongoose = require("mongoose");
 const Listing = require("../models/listing");
-const User = require("../models/user"); 
-const { data: sampleListings } = require("./data");
+const User = require("../models/user");
+const sampleListings = require("./data");
 
 main().then(() => {
   console.log("Seeding completed");
@@ -9,24 +11,22 @@ main().then(() => {
 });
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+  await mongoose.connect(process.env.ATLASDB_URL);
   console.log("DB Connected");
 
-  // Delete old listings
   await Listing.deleteMany({});
   console.log("Old listings removed");
 
-  const user = await User.findOne(); 
+  const user = await User.findOne();
   if (!user) {
-    console.log("No user found. Please seed a user first.");
+    console.log("No user found.");
     return;
   }
 
-  // Insert sample listings
   for (let listing of sampleListings) {
-    if (!listing.category) {
-      listing.category = "Trending";
-    }
+    listing.owner = user._id;
+
+    if (!listing.category) listing.category = "Trending";
     if (!listing.geometry) {
       listing.geometry = {
         type: "Point",
@@ -34,12 +34,8 @@ async function main() {
       };
     }
 
-    listing.owner = user._id; 
-
-    const newListing = new Listing(listing);
-    await newListing.save();
+    await Listing.create(listing);
   }
 
   console.log("New listings added");
 }
-

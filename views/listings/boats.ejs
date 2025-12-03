@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="container mt-4">
-    <h2 class="mb-4">🚤 Boats </h2>
+    <h2 class="mb-4">🚤 boats </h2>
 
     <% if (boatsListings.length === 0) { %>
         <p>No boats available at the moment.</p>
@@ -10,7 +10,7 @@
             <% boatsListings.forEach(listing => { %>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 listing-card ">
-                        <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="Boat image">
+                        <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="boats image">
 
                         <div class="card-body">
                             <h5 class="card-title"><%= listing.title %></h5>
