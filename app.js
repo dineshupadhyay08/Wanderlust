@@ -38,26 +38,29 @@ main()
 // ----------------------
 const store = MongoStore.create({
   mongoUrl: dbUrl,
-  crypto: { secret: process.env.SECRET },
+  crypto: { secret: process.env.SECRET || "fallbacksecret123" },
   touchAfter: 24 * 3600,
 });
 
-store.on("error", () => {
-  console.log("❌ Session Store Error");
+store.on("error", (e) => {
+  console.log("❌ Session Store Error", e);
 });
 
 const sessionOptions = {
   store,
-  secret: process.env.SECRET,
+  secret: process.env.SECRET || "fallbacksecret123",
   resave: false,
-  saveUninitialized: true,
+
+  // ⭐⭐ MOST IMPORTANT FIX ⭐⭐
+  saveUninitialized: false, // Render compatible
+
   cookie: {
-    expire: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    // ⭐ correct key is "expires", not "expire"
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
   },
 };
-
 // ----------------------
 // 🟢 EXPRESS SETUP
 // ----------------------
@@ -77,6 +80,7 @@ app.use(flash());
 // ----------------------
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
