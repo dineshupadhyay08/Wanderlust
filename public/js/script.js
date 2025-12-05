@@ -1,49 +1,60 @@
 (() => {
-    'use strict'
-  
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
-  
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
+  "use strict";
+
+  const forms = document.querySelectorAll(".needs-validation");
+
+  Array.from(forms).forEach((form) => {
+    form.addEventListener(
+      "submit",
+      (event) => {
         if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+          event.preventDefault();
+          event.stopPropagation();
         }
-  
-        form.classList.add('was-validated')
-      }, false)
-    })
-  })()
 
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
+// ----------------------------
+// SEARCH FORM (SAFE VERSION)
+// ----------------------------
+const searchForm = document.getElementById("searchForm");
+const searchInput = document.getElementById("searchInput");
 
-
-  document.getElementById("searchForm").addEventListener("submit", function (e) {
+if (searchForm && searchInput) {
+  searchForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    const query = document.getElementById("searchInput").value.toLowerCase();
+
+    const query = searchInput.value.toLowerCase();
     const listings = document.querySelectorAll(".listing-card");
 
-    listings.forEach(card => {
+    listings.forEach((card) => {
       const text = card.querySelector(".card-text").textContent.toLowerCase();
 
       if (text.includes(query)) {
-        card.parentElement.style.display = "block";  // <a> element
+        card.parentElement.style.display = "block";
       } else {
         card.parentElement.style.display = "none";
       }
     });
   });
+}
 
-    let taxtSwitch = document.getElementById("switchCheckDefault");
-    taxtSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("taxInfo")
-    for(info of taxInfo){
-       if(info.style.display != "inline"){
-        info.style.display = "inline";
-       }else{
-        info.style.display = "none";
-       }
+// ----------------------------
+// TAX SWITCH (SAFE VERSION)
+// ----------------------------
+let taxSwitch = document.getElementById("switchCheckDefault");
+
+if (taxSwitch) {
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("taxInfo");
+
+    for (let info of taxInfo) {
+      info.style.display = info.style.display !== "inline" ? "inline" : "none";
     }
-    }) 
+  });
+}
