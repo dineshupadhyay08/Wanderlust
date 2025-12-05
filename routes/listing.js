@@ -43,11 +43,10 @@ router.get("/arctic", wrapAsync(listingController.arcticListing));
 //pools
 router.get("/pools", wrapAsync(listingController.poolsListing));
 
-router.route("/:id").get(wrapAsync(listingController.showListing));
-// .put(...) // etc.
+// ❌ Yeh duplicate route remove kar diya
+// router.route("/:id").get(wrapAsync(listingController.showListing));
 
-//new listing//
-
+//new listing
 router
   .route("/:id")
   .get(wrapAsync(listingController.showListing))

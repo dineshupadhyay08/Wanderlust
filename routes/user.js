@@ -6,24 +6,27 @@ const req = require("express/lib/request.js");
 const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware.js");
 
-const userController = require("../controllers/user.js")
+const userController = require("../controllers/user.js");
 
-router.get("/singup", userController.renderSignup);
+// SIGNUP ROUTES
+router.get("/signup", userController.renderSignup);
 
-router.post("/signup", wrapAsync(userController.sinup));
+router.post("/signup", wrapAsync(userController.signup)); // FIXED HERE
 
-
+// LOGIN ROUTES
 router.get("/login", userController.renderLoginForm);
 
-router.post("/login", saveRedirectUrl, passport.authenticate("local", {
+router.post(
+  "/login",
+  saveRedirectUrl,
+  passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
-}),
-    userController.login
+  }),
+  userController.login
 );
 
+// LOGOUT ROUTE
 router.get("/logout", userController.logout);
-
-
 
 module.exports = router;

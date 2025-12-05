@@ -93,20 +93,12 @@ app.use((req, res, next) => {
 // ----------------------
 // 🟢 ROUTES
 // ----------------------
-
-// root redirect
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });
-
-// user routes
-app.use("/", userRouter);
-
-// listing routes
 app.use("/listings", listingRouter);
-
-// reviews
 app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter); // ⭐ IMPORTANT
 
 // ----------------------
 // 🟢 404 Error
