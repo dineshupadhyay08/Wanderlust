@@ -93,9 +93,12 @@ app.use((req, res, next) => {
 // ----------------------
 // 🟢 ROUTES
 // ----------------------
+app.use("/", userRouter);
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
-app.use("/", listingRouter);
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 // ----------------------
 // 🟢 404 Error
