@@ -23,7 +23,7 @@ router
 //Room listing
 router.get("/room", wrapAsync(listingController.roomListings));
 
-//treanding listings
+//Trending listings
 router.get("/trending", wrapAsync(listingController.trendingListings));
 
 router.get("/new", isLoggedIn, listingController.renderNewForm);
@@ -43,10 +43,9 @@ router.get("/arctic", wrapAsync(listingController.arcticListing));
 //pools
 router.get("/pools", wrapAsync(listingController.poolsListing));
 
-// ❌ Yeh duplicate route remove kar diya
-// router.route("/:id").get(wrapAsync(listingController.showListing));
-
-//new listing
+// ----------------------------
+// SINGLE ROUTE BLOCK—PERFECT ✔
+// ----------------------------
 router
   .route("/:id")
   .get(wrapAsync(listingController.showListing))
@@ -54,18 +53,13 @@ router
     isLoggedIn,
     isOwner,
     upload.single("listing[image]"),
-    (req, res, next) => {
-      console.log("BODY:", req.body);
-      next();
-    },
     validateListing,
     wrapAsync(listingController.updateListing)
   )
   .delete(
     isLoggedIn,
     isOwner,
-    validateListing,
-    wrapAsync(listingController.deleteListing)
+    wrapAsync(listingController.deleteListing) // ❌ validateListing removed
   );
 
 //edit route

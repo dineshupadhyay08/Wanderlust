@@ -68,20 +68,52 @@ module.exports.editListing = async (req, res) => {
   res.render("listings/edit.ejs", { listing });
 };
 
-module.exports.updateListing = async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+// module.exports.updateListing = async (req, res) => {
+//   let { id } = req.params;
+//   let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
-  // let listing = await Listing.findById(id);
-  if (typeof req.file !== "undefined") {
-    let url = req.file.path;
-    let filename = req.file.filename;
-    listing.image = { url, filename };
-    console.log(req.body);
+//   // let listing = await Listing.findById(id);
+//   if (typeof req.file !== "undefined") {
+//     let url = req.file.path;
+//     let filename = req.file.filename;
+//     listing.image = { url, filename };
+//     console.log(req.body);
+//     await listing.save();
+//   }
+//   req.flash("success", "Listing Updated!");
+//   res.redirect(`/listings/${id}`);
+// };
+
+module.exports.updateListing = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+
+    // Find listing properly
+    let listing = await Listing.findById(id);
+
+    if (!listing) {
+      req.flash("error", "Listing not found");
+      return res.redirect("/listings");
+    }
+
+    // Update normal fields
+    listing.set(req.body.listing);
+
+    // Update image only if a new file is uploaded
+    if (req.file) {
+      listing.image = {
+        url: req.file.path,
+        filename: req.file.filename,
+      };
+    }
+
     await listing.save();
+
+    req.flash("success", "Listing Updated!");
+    return res.redirect(`/listings/${id}`);
+  } catch (err) {
+    return next(err); // prevents double-response crash
   }
-  req.flash("success", "Listing Updated!");
-  res.redirect(`/listings/${id}`);
 };
 
 module.exports.deleteListing = async (req, res) => {
