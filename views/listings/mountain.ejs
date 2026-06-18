@@ -1,28 +1,28 @@
 <% layout('/layouts/boilerplate') -%>
 
-<div class="container mt-4">
-    <h2 class="mb-4">🏔️ Mountain </h2>
+<section class="page-shell fade-in-up">
+  <h1 class="page-title mb-2">Mountain Escapes</h1>
+  <p class="page-subtitle mb-4">Nature-led stays presented with more breathing room and a premium visual rhythm.</p>
 
-     <% if (mountainListings.length === 0) { %>
-        <p>No listings found in this category.</p>
-    <% } else { %>
-
-    <div class="row">
-        <% mountainListings.forEach(listing => { %>
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 listing-card">
-                    <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="<%= listing.title %>">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= listing.title %></h5>
-                        <p class="card-text"><%= listing.description %></p>
-                        <p><strong>Price:</strong> ₹<%= listing.price %></p>
-                        <a href="/listings/<%= listing._id %>" class="btn btn-dark btn-sm">View</a>
-                    </div>
-                </div>
+  <% if (mountainListings.length === 0) { %>
+    <div class="empty-state">No listings found in this category.</div>
+  <% } else { %>
+    <div class="row listing-grid">
+      <% mountainListings.forEach(listing => { %>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 listing-card">
+            <div class="card-img-wrap">
+              <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="<%= listing.title %>">
             </div>
-         <% }) %>
+            <div class="card-body">
+              <h5 class="card-title"><%= listing.title %></h5>
+              <p class="card-text muted-copy"><%= listing.description %></p>
+              <p class="listing-price mb-2">&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
+              <a href="/listings/<%= listing._id %>" class="btn btn-dark btn-sm">View</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
     </div>
-    <% } %>
-</div>
-
-
+  <% } %>
+</section>

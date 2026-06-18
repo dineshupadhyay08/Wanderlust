@@ -1,27 +1,29 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="container mt-4">
-    <h2 class="mb-4">🚤 boats </h2>
+<section class="page-shell fade-in-up">
+  <h1 class="page-title mb-2">Boats</h1>
+  <p class="page-subtitle mb-4">Floating stays and waterfront escapes styled with cleaner, richer cards.</p>
 
-    <% if (boatsListings.length === 0) { %>
-        <p>No boats available at the moment.</p>
-    <% } else { %>
-        <div class="row">
-            <% boatsListings.forEach(listing => { %>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 listing-card ">
-                        <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="boats image">
-
-                        <div class="card-body">
-                            <h5 class="card-title"><%= listing.title %></h5>
-                            <p class="card-text"><%= listing.description.substring(0, 100) %>...</p>
-                            <p class="card-text">&#8377 <%= listing.price.toLocaleString("en-IN") %></p>
-                            <p class="card-text"><%= listing.location %>, <%= listing.country %></p>
-                            <a href="/listings/<%= listing._id %>" class="btn btn-dark btn-sm">View Details</a>
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
+  <% if (boatsListings.length === 0) { %>
+    <div class="empty-state">No boats available at the moment.</div>
+  <% } else { %>
+    <div class="row listing-grid">
+      <% boatsListings.forEach(listing => { %>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 listing-card">
+            <div class="card-img-wrap">
+              <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="<%= listing.title %>">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><%= listing.title %></h5>
+              <p class="card-text muted-copy"><%= listing.description.substring(0, 100) %>...</p>
+              <p class="listing-price mb-2">&#8377 <%= listing.price.toLocaleString("en-IN") %></p>
+              <p class="card-text muted-copy"><%= listing.location %>, <%= listing.country %></p>
+              <a href="/listings/<%= listing._id %>" class="btn btn-dark btn-sm">View Details</a>
+            </div>
+          </div>
         </div>
-    <% } %>
-</div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>

@@ -19,9 +19,34 @@
   });
 })();
 
-// ----------------------------
-// SEARCH FORM (SAFE VERSION)
-// ----------------------------
+const root = document.documentElement;
+const themeToggle = document.getElementById("themeToggle");
+
+const applyTheme = (theme) => {
+  root.setAttribute("data-theme", theme);
+
+  if (themeToggle) {
+    themeToggle.innerHTML =
+      theme === "dark"
+        ? '<i class="fa-solid fa-sun"></i>'
+        : '<i class="fa-solid fa-moon"></i>';
+    themeToggle.setAttribute(
+      "aria-label",
+      theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+    );
+  }
+};
+
+applyTheme(localStorage.getItem("wanderlust-theme") === "dark" ? "dark" : "light");
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    localStorage.setItem("wanderlust-theme", nextTheme);
+    applyTheme(nextTheme);
+  });
+}
+
 const searchForm = document.getElementById("searchForm");
 const searchInput = document.getElementById("searchInput");
 
@@ -33,7 +58,7 @@ if (searchForm && searchInput) {
     const listings = document.querySelectorAll(".listing-card");
 
     listings.forEach((card) => {
-      const text = card.querySelector(".card-text").textContent.toLowerCase();
+      const text = card.textContent.toLowerCase();
 
       if (text.includes(query)) {
         card.parentElement.style.display = "block";
@@ -44,17 +69,32 @@ if (searchForm && searchInput) {
   });
 }
 
-// ----------------------------
-// TAX SWITCH (SAFE VERSION)
-// ----------------------------
-let taxSwitch = document.getElementById("switchCheckDefault");
+const taxSwitch = document.getElementById("switchCheckDefault");
 
 if (taxSwitch) {
-  taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("taxInfo");
+  taxSwitch.addEventListener("change", () => {
+    const taxInfo = document.getElementsByClassName("taxInfo");
 
     for (let info of taxInfo) {
-      info.style.display = info.style.display !== "inline" ? "inline" : "none";
+      info.style.display = taxSwitch.checked ? "inline" : "none";
     }
   });
 }
+
+const flashMessages = document.querySelectorAll("#flashMessages [data-message]");
+
+flashMessages.forEach((node) => {
+  if (typeof Toastify === "undefined") return;
+
+  const type = node.dataset.type;
+
+  Toastify({
+    text: node.dataset.message,
+    duration: 3500,
+    gravity: "top",
+    position: "right",
+    close: true,
+    stopOnFocus: true,
+    className: type === "success" ? "toastify-success" : "toastify-error",
+  }).showToast();
+});

@@ -1,69 +1,63 @@
-<style>
-  .btn-search {
-    background-color: #fe424d;
-    color: #fff;
-    border-radius: 25px;
-    padding: 0 1rem 0 1rem;
-  }
-
-  .btn-search:hover {
-    background-color: #fe424d;
-    color: #fff;
-  }
-
-  .btn-search i {
-    display: inline;
-    margin-right: 0.5rem;
-  }
-
-  .search-inp {
-    border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 1rem;
-  }
-</style>
-
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"
-      ><i class="fa-solid fa-compass"></i
-    ></a>
+    <a class="navbar-brand" href="/listings">
+      <span class="brand-mark"><i class="fa-solid fa-compass"></i></span>
+      <span class="brand-text">
+        Wanderlust
+        <small>Luxury stays</small>
+      </span>
+    </a>
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <!-- <a class="nav-link "  href="#">Home</a> -->
+      <div class="navbar-nav align-items-lg-center">
         <a class="nav-link" href="/listings">Explore</a>
       </div>
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search" id="searchForm">
+      <div class="navbar-nav mx-auto w-100 justify-content-center px-lg-4 my-3 my-lg-0">
+        <form class="search-shell" role="search" id="searchForm">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
           <input
-            class="form-control me-2 search-inp"
+            class="form-control search-inp"
             type="search"
             placeholder="Search destinations"
             id="searchInput"
           />
-          <button class="btn btn-search" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>Search
-          </button>
+          <button class="btn btn-search" type="submit">Search</button>
         </form>
       </div>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Add New Place</a>
-        <% if (!currUser) { %>
-        <a class="nav-link" href="/signup"><b>SignUp</b></a>
-        <a class="nav-link" href="/login"><b>Log In</b></a>
-        <% } %> <% if(currUser) { %>
-        <a class="nav-link fw-bold me-3 text-danger"
-          ><%= currUser.username %></a
-        >
-        <a class="nav-link" href="/logout"><b>Log Out</b></a>
+      <div class="navbar-nav ms-auto align-items-lg-center gap-2 navbar-actions">
+        <div class="navbar-action-row">
+          <button
+            class="btn btn-theme"
+            type="button"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
+            title="Toggle theme"
+          >
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <% if (!currUser) { %>
+          <div class="guest-action-row">
+            <a class="btn btn-luxury" href="/listings/new">Add New Listing</a>
+            <a class="nav-link nav-link-compact" href="/signup">Sign Up</a>
+            <a class="nav-link nav-link-compact" href="/login">Log In</a>
+          </div>
+          <% } else { %>
+          <a class="btn btn-luxury" href="/listings/new">Add New Listing</a>
+          <% } %>
+        </div>
+        <% if(currUser) { %>
+        <span class="nav-link nav-user-pill"><%= currUser.username %></span>
+        <a class="nav-link" href="/logout">Log Out</a>
         <% } %>
       </div>
     </div>
